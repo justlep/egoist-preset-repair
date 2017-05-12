@@ -57,7 +57,7 @@
         <li class="sample__item" data-bind="css: {'sample__item--invalid': !isValid()}, dropFile: {callback: setNewSampleFile, accept: ALLOWED_SAMPLE_FILE_EXTENSIONS}">
             <div class="sample__currentPath" data-bind="text: currentPath, css: {'sample__currentPath--changed': isChanged}"></div>
 
-            <input type="text"class="sample__newPath"
+            <input type="text" class="sample__newPath" spellcheck="false"
                    data-bind="textInput: newPath, attr: {maxlength: length}, css: {'sample__newPath--unchanged': !isChanged()}">
 
             <!--<button type="button" data-bind="click: $data.stripPath">Remove path</button>-->
@@ -85,7 +85,7 @@
 
         <label>
             New preset filename:<br/>
-            <input type="text" data-bind="textInput: newPresetFilename" style="width: 300px"/>
+            <input type="text" spellcheck="false" data-bind="textInput: newPresetFilename" style="width: 300px"/>
         </label>
         <button type="button" data-bind="click: download, visible: isNewFilenameValid">Download</button>
         <a style="display:none" id="hiddenDownloadLink" data-bind="attr:{href:downloadUrl, download: newPresetFilename}">Download</a>
