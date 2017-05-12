@@ -39,8 +39,6 @@ function ReplaceableSample(lengthBytes, samplePath) {
         var filename = file.name,
             isValid = (/\.(wav|aif)/i).test(filename);
 
-        // console.log(file);
-
         if (isValid) {
             self.newPath(filename);
             console.log('new length: %s, old length: %s', filename.length, self.length);
@@ -53,7 +51,6 @@ function ReplaceableSample(lengthBytes, samplePath) {
 }
 
 ReplaceableSample.prototype = {
-    ACCEPTED_SAMPLE_EXTENSIONS: '.wav',
     stripPath: function() {
         this.newPath((this.newPath()||'').replace(/^.*[\\/]/,''));
     },
