@@ -1,7 +1,3 @@
-
-
-
-
 /**
  * @constructor
  */
@@ -81,12 +77,8 @@ function App() {
     this.getFixedFileContent = function() {
         var changedSamplesByCurrentPath = {};
 
-        self.samples.peek().filter(function(s) {
-            if (s.isChanged.peek()) {
-                changedSamplesByCurrentPath[s.currentPath] = s;
-                return true;
-            }
-            return false;
+        self.samples.peek().forEach(function(s) {
+            changedSamplesByCurrentPath[s.currentPath] = s.isChanged.peek() && s;
         });
 
         return (blob.peek()||'').replace(SAMPLE_SEARCH_REPLACE_REGEX, function(match, lengthBytes, samplePath, zeroes) {
