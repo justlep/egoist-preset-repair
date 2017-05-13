@@ -28,7 +28,11 @@
     </div>
 
     <label class="preset__dropzone" data-bind="dropFile: {callback: presetFile, accept: ALLOWED_PRESET_FILE_EXTENSIONS}">
-        <span data-bind="text: presetFilename() || 'Click or drag your Egoist preset file here...'"></span>
+        <!-- ko if: presetFilename --><span data-bind="text: presetFilename"></span><!-- /ko -->
+        <!-- ko ifnot: presetFilename -->
+            <span>Click or drag your Egoist preset file here...</span>
+            <small>(no data will be sent anywhere - all happens inside your browser)</small>
+        <!-- /ko -->
         <input type="file" data-bind="dropFile: {callback: presetFile, accept: ALLOWED_PRESET_FILE_EXTENSIONS}">
     </label>
 
