@@ -27,12 +27,16 @@ function App() {
         var f = self.presetFile(),
             filename = f && f.name.replace(/$.*[\\/]/, '');
 
-        self.newPresetFilename(filename && filename.replace(PRESET_SUFFIX_REGEX, '-repaired.sbep'));
+        self.newPresetFilename(filename && filename.replace(PRESET_SUFFIX_REGEX, '-repaired'));
         return filename;
     });
 
-    this.isNewFilenameValid = ko.computed(function() {
-        return (/[^\\/]+\.sbep$/i).test(self.newPresetFilename() || '');
+    this.newPresetFilenameForDownload = ko.computed(function() {
+        return (self.newPresetFilename() || '').trim() + '.sbep';
+    });
+
+    this.isNewPresetFilenameValid = ko.computed(function() {
+        return (/[^\\/]+\.sbep$/i).test(self.newPresetFilenameForDownload());
     });
 
     this.presetFile.subscribe(function(f) {
@@ -93,13 +97,8 @@ function App() {
     };
 
     this.canDownload = ko.computed(function() {
-        var samples = self.samples();
-        for (var i=0; i<samples.length; i++) {
-            if (!samples[i].isValid()) {
-                return false;
-            }
-        }
-        return true;
+        return self.isNewPresetFilenameValid() &&
+               self.samples().every(function(s) {return s.isValid()});
     });
 
     this.downloadUrl = ko.observable('');

@@ -1,4 +1,5 @@
 @bodyColor: #fff;
+@errorColor: #800;
 
 body {
     background: #fff url('data:image/gif;base64,R0lGODdhHwAcAPcAAAAAAIAAAACAAICAAAAAgIAAgACAgMDAwMDcwKbK8P//////zP//mf//Zv//M///AP/M///MzP/Mmf/MZv/MM//MAP+Z//+ZzP+Zmf+ZZv+ZM/+ZAP9m//9mzP9mmf9mZv9mM/9mAP8z//8zzP8zmf8zZv8zM/8zAP8A//8AzP8Amf8AZv8AM/8AAMz//8z/zMz/mcz/Zsz/M8z/AMzM/8zMzMzMmczMZszMM8zMAMyZ/8yZzMyZmcyZZsyZM8yZAMxm/8xmzMxmmcxmZsxmM8xmAMwz/8wzzMwzmcwzZswzM8wzAMwA/8wAzMwAmcwAZswAM8wAAJn//5n/zJn/mZn/Zpn/M5n/AJnM/5nMzJnMmZnMZpnMM5nMAJmZ/5mZzJmZmZmZZpmZM5mZAJlm/5lmzJlmmZlmZplmM5lmAJkz/5kzzJkzmZkzZpkzM5kzAJkA/5kAzJkAmZkAZpkAM5kAAGb//2b/zGb/mWb/Zmb/M2b/AGbM/2bMzGbMmWbMZmbMM2bMAGaZ/2aZzGaZmWaZZmaZM2aZAGZm/2ZmzGZmmWZmZmZmM2ZmAGYz/2YzzGYzmWYzZmYzM2YzAGYA/2YAzGYAmWYAZmYAM2YAADP//zP/zDP/mTP/ZjP/MzP/ADPM/zPMzDPMmTPMZjPMMzPMADOZ/zOZzDOZmTOZZjOZMzOZADNm/zNmzDNmmTNmZjNmMzNmADMz/zMzzDMzmTMzZjMzMzMzADMA/zMAzDMAmTMAZjMAMzMAAAD//wD/zAD/mQD/ZgD/MwD/AADM/wDMzADMmQDMZgDMMwDMAACZ/wCZzACZmQCZZgCZMwCZAABm/wBmzABmmQBmZgBmMwBmAAAz/wAzzAAzmQAzZgAzMwAzAAAA/wAAzAAAmQAAZgAAMwAAABAQEBwcHCgoKDQ0NEBAQExMTFhYWGRkZHBwcHx8fIiIiJSUlKCgoKysrLi4uMTExNDQ0Nzc3Ojo6PT09P/78KCgpICAgP8AAAD/AP//AAAA//8A/wD//////ywAAAAAHwAcAEAI/gDjHYB3oOBAePEEwkN4IB7BhAMbJnzo0ODCggoRKpQYEeLFiRY5UqzosWFDhhMdkgQ5kWDIkibfmRwoM+HKgRUXajxoc6FAgzQx4oS50edIhvBqFiT4UCNTjD4zPo3ocmPPnVFVXi1pVCLJpV4fgnVJMSLUmUeXZu2o9uLOg1SFaszoEStUsUN5wlSbcazIplU/KhTY8qBTnHwlCmbLNutXthXNTl161SfjuVEv6n1auKfcjlJjYhXLUG1Is5Q92hwK0iJEk5pPKs4au2rHj6B1hgTs+aTT1XNBqzxLda7qnoRBo8at2yVYiO+Sv3Wu1SJtvLodOjf+++VJwtW1E9JNXRvra4o6S9pUn7o1y+98AwIAOw==') 0 0 repeat;
@@ -44,9 +45,9 @@ button {
     }
 
     &__warning {
-        border: 1px solid #800;
+        border: 1px solid @errorColor;
         padding: 5px 7px;
-        color: #800;
+        color: @errorColor;
         font-size: 0.9em;
         background: rgba(127,0,0, 0.3);
         margin-bottom: 10px;
@@ -80,6 +81,27 @@ button {
 
     &__input {
         display:none;
+    }
+
+    &__newName {
+        width: 300px;
+        padding: 2px 4px;
+        font-family: monospace;
+
+        &--invalid {
+            border: 2px solid @errorColor;
+            color: @errorColor;
+        }
+
+        &Ext {
+            width: auto;
+            padding-right: 10px;
+            font-family: monospace;
+        }
+    }
+
+    &__downloadBtn {
+        padding: 2px 10px;
     }
 }
 
@@ -154,10 +176,10 @@ button {
         }
 
         &--invalid {
-            border-color: red;
+            border-color: @errorColor;
 
             .sample__newPath {
-                color: red;
+                color: @errorColor;
             }
         }
     }
@@ -183,6 +205,6 @@ button {
         padding-left: 10px;
         font-size: 0.8em;
         font-weight: bold;
-        color: #555;
+        color: @errorColor;
     }
 }

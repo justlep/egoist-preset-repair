@@ -74,8 +74,9 @@
         </li>
     </ol>
 
-    <div data-bind="if: canDownload">
-        <hr>
+    <hr>
+
+    <div class="app__download">
         <h4>Download fixed preset</h4>
 
         <div class="app__warning">
@@ -85,10 +86,13 @@
 
         <label>
             New preset filename:<br/>
-            <input type="text" spellcheck="false" data-bind="textInput: newPresetFilename" style="width: 300px"/>
+            <input type="text" class="preset__newName" spellcheck="false"
+                   data-bind="textInput: newPresetFilename, css: {'preset__newName--invalid': !isNewPresetFilenameValid()}"/><span class="preset__newNameExt">.sbep</span>
         </label>
-        <button type="button" data-bind="click: download, visible: isNewFilenameValid">Download</button>
-        <a style="display:none" id="hiddenDownloadLink" data-bind="attr:{href:downloadUrl, download: newPresetFilename}">Download</a>
+
+        <button class="preset__downloadBtn" type="button" data-bind="click: download, enable: canDownload">Download</button>
+
+        <a style="display:none" id="hiddenDownloadLink" data-bind="attr:{href:downloadUrl, download: newPresetFilenameForDownload}">Download</a>
     </div>
 
     <!-- /ko -->
