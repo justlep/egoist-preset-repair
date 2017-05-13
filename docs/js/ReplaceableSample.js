@@ -62,9 +62,80 @@ ReplaceableSample.prototype = {
             throw new Error('Cannot get final padded path for ReplaceableSample ' + this.currentPath);
         }
         var newPath = this.newPath.peek(),
-            newPaddedPath = [newPath].concat(new Array(this.currentPath.length - newPath.length)).join(' ');
+            ABSOLUTE_WINDOWS_PATH_REGEX = /^([a-z]:\\)/i,
+            ABSOLUTE_LINUX_PATH_REGEX = /^(~?\/)/,
+            lengthDifference = this.currentPath.length - newPath.length,
+            lengthDifferenceArray = new Array(lengthDifference),
+            newPaddedPath;
 
-        console.log('Generating final path:\nOLD: "%s"\nNEW: "%s"', this.currentPath, newPaddedPath);
+        if (!lengthDifference) {
+            newPaddedPath = newPath;
+
+        } else if (ABSOLUTE_WINDOWS_PATH_REGEX.test(newPath)) {
+            // Windows ignores multiple backslashes, allowing padding like
+            // F:\temp\xx.wav ==> F:\\\\\\temp\xx.wav
+            newPaddedPath = newPath.replace(ABSOLUTE_WINDOWS_PATH_REGEX, ['$1'].concat(lengthDifferenceArray).join('\\'));
+
+        } else if (ABSOLUTE_LINUX_PATH_REGEX.test(newPath)) {
+            // Linux ignores multiple slashes, allowing padding like
+            // ~/temp/xx.wav ==> ~////temp/xx.wav    or
+            // /temp/xx.wav  ==> /////temp/xx.wav
+            newPaddedPath = newPath.replace(ABSOLUTE_LINUX_PATH_REGEX, ['$1'].concat(lengthDifferenceArray).join('/'));
+
+        } else {
+            // otherwise just pad with trailing spaces
+            newPaddedPath = [newPath].concat(lengthDifferenceArray).join(' ');
+        }
+
+        console.log('Generated padded path:\n' +
+            'CURRENT:    "%s"\n' +
+            'NEW RAW:    "%s"\n' +
+            'NEW PADDED: "%s"',
+            this.currentPath, newPath, newPaddedPath);
+
+        if (newPaddedPath.length !== this.currentPath.length) {
+            throw new Error('Whoops, newPaddedPath length doesnt match old length');
+        }
+
         return newPaddedPath;
     }
 };
+
+/**
+ * @static
+ */
+ReplaceableSample.test = function() {
+    console.log('Running tests...');
+
+    [
+        // [<old>, <new-raw>, <expected-new-padded>]
+        ['c:\\test.wav', 'c:\\te.wav', 'c:\\\\\\te.wav'],
+        ['c:\\test.wav', 'c:\\test.wav', 'c:\\test.wav'], // idem
+        ['c:\\test.wav', 'test.wav', 'test.wav   '],
+        ['/test.wav', 'test.wav', 'test.wav '],
+        ['/test.wav', '/test.wav', '/test.wav'], // idem
+        ['/temp/test.wav', '/temp/xx.wav', '///temp/xx.wav'],
+        ['~/temp/test.wav', '~/temp/xx.wav', '~///temp/xx.wav'],
+        ['~/temp/test.wav', '~/temp/test.wav', '~/temp/test.wav'] // idem
+    ].forEach(function(testPaths) {
+        var oldPath = testPaths[0],
+            newPath = testPaths[1],
+            expectedPaddedPath = testPaths[2],
+            lengthBytes = String.fromCharCode(oldPath.length) + new Array(4).join(String.fromCharCode(0)),
+            sample = new ReplaceableSample(lengthBytes, oldPath),
+            paddedNewPath;
+
+        sample.newPath(newPath);
+        paddedNewPath = sample.getFinalPaddedNewPath();
+
+        if (paddedNewPath !== expectedPaddedPath) {
+            console.warn('Test failed for %o.\nExpected: "%s"\nActual:   "%s"', JSON.stringify(testPaths), expectedPaddedPath, paddedNewPath);
+            throw new Error('Test failed');
+        }
+    });
+
+    console.log('All tests passed');
+};
+
+// always test up front, so what
+ReplaceableSample.test();
