@@ -104,7 +104,7 @@ function App() {
     this.downloadUrl = ko.observable('');
 
     this.download = function() {
-        var dataUrl = 'data:text/csv;charset=utf-8;base64,' + btoa(self.getFixedFileContent());
+        var dataUrl = 'data:application/octet-stream;charset=utf-8;base64,' + btoa(self.getFixedFileContent());
         self.downloadUrl(dataUrl);
         setTimeout(function() {
             ko.utils.triggerEvent(document.getElementById('hiddenDownloadLink'), 'click');
