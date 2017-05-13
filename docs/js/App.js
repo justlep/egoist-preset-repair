@@ -62,7 +62,7 @@ function App() {
 
             if (!alreadyFound) {
                 try {
-                    replaceableSample = new ReplaceableSample(lengthBytes, samplePath)
+                    replaceableSample = new ReplaceableSample(lengthBytes, samplePath);
                     replaceableSamples.push(replaceableSample);
                     matchMap[match] = replaceableSample;
                 } catch (e) {
@@ -105,8 +105,6 @@ function App() {
     this.downloadUrl = ko.observable('');
 
     this.download = function() {
-        // var blobUrl = URL.createObjectURL(blob() || 'abc'); // TODO use new blob
-        // self.downloadUrl(blobUrl);
         var dataUrl = 'data:text/csv;charset=utf-8;base64,' + btoa(self.getFixedFileContent());
         self.downloadUrl(dataUrl);
         setTimeout(function() {

@@ -57,7 +57,7 @@
         <li class="sample__item" data-bind="css: {'sample__item--invalid': !isValid()}, dropFile: {callback: setNewSampleFile, accept: ALLOWED_SAMPLE_FILE_EXTENSIONS}">
             <div class="sample__currentPath" data-bind="text: currentPath, css: {'sample__currentPath--changed': isChanged}"></div>
 
-            <input type="text" class="sample__newPath" spellcheck="false"
+            <input type="text" class="sample__newPath" spellcheck="false" title="Put the correct sample path here"
                    data-bind="textInput: newPath, attr: {maxlength: length}, css: {'sample__newPath--unchanged': !isChanged()}">
 
             <!--<button type="button" data-bind="click: $data.stripPath">Remove path</button>-->
